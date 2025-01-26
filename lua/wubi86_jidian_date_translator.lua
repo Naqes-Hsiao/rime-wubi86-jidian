@@ -23,12 +23,12 @@ function wubi86_jidian_date_translator(input, seg)
     -- %y	two-digit year (98) [00-99]
     -- %%	the character `%´
 
-    -- 输入完整日期
+    -- 输入完整时间
     if (input == "datetime") then
         yield(Candidate("date", seg.start, seg._end, os.date("%Y-%m-%d %H:%M:%S"), ""))
     end
 
-    -- 输入日期
+    -- 输入年月日
     if (input == "date") then
         --- Candidate(type, start, end, text, comment)
         yield(Candidate("date", seg.start, seg._end, os.date("%Y-%m-%d"), ""))
@@ -42,7 +42,6 @@ function wubi86_jidian_date_translator(input, seg)
     if (input == "time") then
         --- Candidate(type, start, end, text, comment)
         yield(Candidate("time", seg.start, seg._end, os.date("%H:%M"), ""))
-        yield(Candidate("time", seg.start, seg._end, os.date("%Y%m%d%H%M%S"), ""))
         yield(Candidate("time", seg.start, seg._end, os.date("%H:%M:%S"), ""))
     end
 
@@ -53,15 +52,27 @@ function wubi86_jidian_date_translator(input, seg)
         local weekTab = {'日', '一', '二', '三', '四', '五', '六'}
         yield(Candidate("week", seg.start, seg._end, "周"..weekTab[tonumber(os.date("%w")+1)], ""))
         yield(Candidate("week", seg.start, seg._end, "星期"..weekTab[tonumber(os.date("%w")+1)], ""))
-        yield(Candidate("week", seg.start, seg._end, os.date("%A"), ""))
-        yield(Candidate("week", seg.start, seg._end, os.date("%a"), "缩写"))
-        yield(Candidate("week", seg.start, seg._end, os.date("%W"), "周数"))
+        yield(Candidate("week", seg.start, seg._end, os.date("%A"), "(全称)"))
+        yield(Candidate("week", seg.start, seg._end, os.date("%a"), "(缩写)"))
+        yield(Candidate("week", seg.start, seg._end, os.date("本年第%W周"), ""))
     end
 
-    -- 输入月份英文
+    -- 输入月份
     if (input == "month") then
-        yield(Candidate("month", seg.start, seg._end, os.date("%B"), ""))
-        yield(Candidate("month", seg.start, seg._end, os.date("%b"), "缩写"))
+        local monthTab = {'一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'}
+        yield(Candidate("month", seg.start, seg._end, monthTab[tonumber(os.date("%m"))].."月", ""))
+        yield(Candidate("month", seg.start, seg._end, os.date("%B"), "(全称)"))
+        yield(Candidate("month", seg.start, seg._end, os.date("%b"), "(缩写)"))
+    end
+
+    -- 输入年份
+    if (input == "year") then
+        yield(Candidate("year", seg.start, seg._end, os.date("%Y年"), ""))
+    end
+
+    -- 输入日期
+    if (input == "day") then
+        yield(Candidate("day", seg.start, seg._end, os.date("%d日"), ""))
     end
 end
 
