@@ -75,7 +75,7 @@ s2tw:
   opencc_config: s2tw.json
 
 reverse_lookup:
-  dictionary: pinyin_simp
+  dictionary: rime_frost
   prefix: "z"
   suffix: "'"
 
