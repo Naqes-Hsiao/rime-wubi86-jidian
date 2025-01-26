@@ -55,7 +55,7 @@ speller:
     - derive/([iu])a(o|ng?)$/a$1$2/
 
 translator:
-  dictionary: pinyin_simp
+  dictionary: rime_frost.dict
   preedit_format:
     - xform/([nl])v/$1ü/
     - xform/([nl])ue/$1üe/
